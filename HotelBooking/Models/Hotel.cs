@@ -24,6 +24,6 @@ namespace HotelBooking.Models
         [Required]
         public string Address { get; set; }
 
-        ICollection<Room> Rooms { get; set; }
+        public virtual ICollection<Room> Rooms { get; set; }
     }
 }

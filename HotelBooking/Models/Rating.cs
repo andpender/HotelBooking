@@ -6,19 +6,20 @@ using System.Web;
 
 namespace HotelBooking.Models
 {
-    public class Room
+    public class Rating
     {
         public int Id { get; set; }
 
         [Required]
-        public string NumBeds { get; set; }
+        public int Score { get; set; }
 
         [Required]
-        public string Address { get; set; }
+        public DateTime CreatedDate { get; set; }
 
-        public Availability Availability { get; set; }
+        [Required]
+        public string UserId { get; set; }
 
+        [Required]
         public virtual Hotel Hotel { get; set; }
     }
-
 }

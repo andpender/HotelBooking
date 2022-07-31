@@ -9,12 +9,19 @@ namespace HotelBooking.Models
 {
     public class WriteEmailViewModel
     {
+        [Required]
         [Display(Name = "To Emails")]
         public string ToEmails { get; set; }
+
+        [Required]
         public string Subject { get; set; }
+
+        [Required]
         public string Body { get; set; }
+
         [Display(Name = "Email Attachment")]
         public string EmailAttachmentPath { get; set; }
+
         public HttpPostedFileBase AttachmentFile { get; set; }
     }
 }

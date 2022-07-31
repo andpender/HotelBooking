@@ -9,9 +9,6 @@ using System.Web;
 using System.Web.Mvc;
 using HotelBooking.DAL;
 using HotelBooking.Models;
-using System.IO;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 
 namespace HotelBooking.Controllers
 {
@@ -124,33 +121,6 @@ namespace HotelBooking.Controllers
             db.Hotels.Remove(hotel);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
-        }
-
-        [Authorize(Roles = "Admin,Employee")]
-        public ActionResult WriteEmail()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Employee")]
-        public async Task<ActionResult> WriteEmail([Bind(Include = "ToEmails,Subject,Body,AttachmentFile")] WriteEmailViewModel writeEmailViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var apiKey = "";
-                var client = new SendGridClient(apiKey);
-                var from = new EmailAddress("a@.com", "A");
-                var subject = "Sending with SendGrid is Fun";
-                var to = new EmailAddress("test@example.com", "Example User");
-                var plainTextContent = "and easy to do anywhere, even with C#";
-                var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
-                var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-                var response = await client.SendEmailAsync(msg);
-            }
-
-            return View();
         }
 
         protected override void Dispose(bool disposing)
