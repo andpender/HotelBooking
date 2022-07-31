@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HotelBooking.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,8 @@ namespace HotelBooking.Controllers
 {
     public class HomeController : Controller
     {
+        private HotelBookingContext db = new HotelBookingContext();
+
         public ActionResult Index()
         {
             return View();

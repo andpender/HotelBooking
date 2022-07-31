@@ -26,8 +26,36 @@ namespace HotelBooking.Models
         }
 
         public static ApplicationDbContext Create()
+        {   
+            ApplicationDbContext context = new ApplicationDbContext();
+            createRoles(context);
+            return context;
+        }
+
+        private static void createRoles(ApplicationDbContext context)
         {
-            return new ApplicationDbContext();
+            var roleManager = new RoleManager<IdentityRole> (new RoleStore<IdentityRole>(context));
+
+            if (!roleManager.RoleExists("Admin"))
+            {
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = "Admin";
+                roleManager.Create(role);
+            }
+
+            if (!roleManager.RoleExists("Customer"))
+            {
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = "Customer";
+                roleManager.Create(role);
+            }
+
+            if (!roleManager.RoleExists("Employee"))
+            {
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = "Employee";
+                roleManager.Create(role);
+            }
         }
     }
 }

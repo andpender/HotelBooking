@@ -151,12 +151,25 @@ namespace HotelBooking.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
+                    switch (model.RoleCode)
+                    {
+                        case "1111":
+                            _userManager.AddToRole(user.Id, "Admin");
+                            break;
+                        case "2222":
+                            _userManager.AddToRole(user.Id, "Employee");
+                            break;
+                        default:
+                            _userManager.AddToRole(user.Id, "Customer");
+                            break;
+                    }
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
