@@ -13,7 +13,8 @@ namespace HotelBooking.DAL
         {
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<Hotel> Hotels { get; set; }
+        public DbSet<Room> Rooms { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

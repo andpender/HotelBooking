@@ -9,7 +9,6 @@ namespace HotelBooking.Controllers
 {
     public class HomeController : Controller
     {
-        private HotelBookingContext db = new HotelBookingContext();
 
         public ActionResult Index()
         {

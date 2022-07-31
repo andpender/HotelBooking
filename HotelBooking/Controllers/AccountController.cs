@@ -157,16 +157,17 @@ namespace HotelBooking.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
+                    var createdUser = UserManager.FindByEmail(model.Email);
                     switch (model.RoleCode)
                     {
                         case "1111":
-                            _userManager.AddToRole(user.Id, "Admin");
+                            UserManager.AddToRole(createdUser.Id, "Admin");
                             break;
                         case "2222":
-                            _userManager.AddToRole(user.Id, "Employee");
+                            UserManager.AddToRole(createdUser.Id, "Employee");
                             break;
                         default:
-                            _userManager.AddToRole(user.Id, "Customer");
+                            UserManager.AddToRole(createdUser.Id, "Customer");
                             break;
                     }
 
