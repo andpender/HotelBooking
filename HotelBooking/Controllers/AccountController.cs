@@ -171,12 +171,6 @@ namespace HotelBooking.Controllers
                             break;
                     }
 
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
@@ -388,6 +382,18 @@ namespace HotelBooking.Controllers
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
+                        switch (model.RoleCode)
+                        {
+                            case "1111":
+                                UserManager.AddToRole(user.Id, "Admin");
+                                break;
+                            case "2222":
+                                UserManager.AddToRole(user.Id, "Employee");
+                                break;
+                            default:
+                                UserManager.AddToRole(user.Id, "Customer");
+                                break;
+                        }
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);
                     }

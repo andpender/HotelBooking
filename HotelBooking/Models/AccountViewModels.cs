@@ -8,6 +8,9 @@ namespace HotelBooking.Models
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Display(Name = "User Code")]
+        public string RoleCode { get; set; }
     }
 
     public class ExternalLoginListViewModel

@@ -58,11 +58,11 @@ namespace HotelBooking
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = Constants.GoogleAuthClientId,
+                ClientSecret = Constants.GoogleAuthClientSecret
+            });
         }
     }
 }
