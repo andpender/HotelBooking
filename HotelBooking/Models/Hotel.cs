@@ -19,11 +19,20 @@ namespace HotelBooking.Models
 
         [Required]
         [Phone]
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
         [Required]
         public string Address { get; set; }
 
+        [Display(Name = "Created Date")]
+        public DateTime CreatedDate { get; set; }
+
         public virtual ICollection<Room> Rooms { get; set; }
+
+        public Hotel()
+        {
+            CreatedDate = DateTime.Now.ToUniversalTime();
+        }
     }
 }

@@ -9,10 +9,13 @@ using System.Web;
 using System.Web.Mvc;
 using HotelBooking.DAL;
 using HotelBooking.Models;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace HotelBooking.Controllers
 {
-    public class HotelsController : Controller
+    public class HotelController : Controller
     {
         private HotelBookingContext db = new HotelBookingContext();
 
@@ -54,6 +57,7 @@ namespace HotelBooking.Controllers
         {
             if (ModelState.IsValid)
             {
+                var test = GeocodingAsync(hotel.Address);
                 db.Hotels.Add(hotel);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -130,6 +134,19 @@ namespace HotelBooking.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private async Task<GeocodingResponse> GeocodingAsync(string address)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri($"https://api.mapbox.com/geocoding/v5/mapbox.places/\"{address}\".json");
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpResponseMessage response = client.GetAsync($"?access_token={Constants.MapBoxPublicToken}").Result;
+            if (response.IsSuccessStatusCode) {
+                return await response.Content.ReadFromJsonAsync<GeocodingResponse>();
+            }
+
+            return null;
         }
     }
 }
