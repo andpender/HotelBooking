@@ -20,6 +20,8 @@ namespace HotelBooking.Models
         public string UserId { get; set; }
 
         [Required]
+        public string Content { get; set; }
+
         public virtual Hotel Hotel { get; set; }
     }
 }

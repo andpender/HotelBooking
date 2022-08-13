@@ -4,6 +4,25 @@
     ViewBag.Title = "Details";
 }
 
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    #map-container {
+        height: 100%;
+    }
+
+    #map {
+        height: 400px;
+    }
+
+    .checked {
+        color: orange;
+    }
+</style>
+
 <h2>Details</h2>
 
 <div>
@@ -16,14 +35,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
         </dd>
 
         <dt>
@@ -52,7 +63,78 @@
 
     </dl>
 </div>
+
+<span class="fa fa-star star-rating"></span>
+<span class="fa fa-star star-rating"></span>
+<span class="fa fa-star star-rating"></span>
+<span class="fa fa-star star-rating"></span>
+<span class="fa fa-star star-rating"></span>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#home">Info</a></li>
+    <li><a data-toggle="tab" href="#book">Book</a></li>
+    <li><a data-toggle="tab" href="#reviews">Reviews</a></li>
+</ul>
+
+<div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+        <h4>Hotel Details</h4>
+        <p>@Html.DisplayFor(model => model.Description)</p>
+        <div id="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+    <div id="book" class="tab-pane fade">
+        <h3>Menu 1</h3>
+        <p>Some content in menu 1.</p>
+    </div>
+    <div id="reviews" class="tab-pane fade">
+        <h3>Menu 2</h3>
+        <p>Some content in menu 2.</p>
+    </div>
+</div>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id });
+        @Html.DisplayText("|");
+    }
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiYXBlbjAwMTQiLCJhIjoiY2w2ajF6Y2d4MHRoYTNjcWdzenFieG8wdSJ9.KLV3yGuhiwx1TT8SHsCPVw';
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/mapbox/streets-v11', // style URL
+        center: [@Model.Longitude, @Model.Latitude], // starting position [lng, lat]
+        zoom: 12, // starting zoom
+        projection: 'globe' // display the map as a 3D globe
+    });
+
+    const marker = new mapboxgl.Marker()
+        .setLngLat([@Model.Longitude, @Model.Latitude])
+        .addTo(map);
+
+    const nav = new mapboxgl.NavigationControl();
+    map.addControl(nav, 'top-right');
+
+    map.on('style.load', () => {
+        map.setFog({}); // Set the default atmosphere style
+    });
+
+    map.on('load', () => {
+        var directions = new MapboxDirections({
+            accessToken: mapboxgl.accessToken,
+        });
+        map.addControl(directions, 'top-left');
+        directions.setDestination([@Model.Longitude, @Model.Latitude]);
+    });
+
+    const rating = 3;
+
+    $(".star-rating").filter(function (index) {
+        return index < rating;
+    }).addClass("checked");
+</script>

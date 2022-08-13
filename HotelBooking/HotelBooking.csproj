@@ -221,6 +221,10 @@
     <Compile Include="Migrations\202207310751052_InitialCreate.designer.cs">
       <DependentUpon>202207310751052_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208110722204_HotelUpdate.cs" />
+    <Compile Include="Migrations\202208110722204_HotelUpdate.designer.cs">
+      <DependentUpon>202208110722204_HotelUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Availability.cs" />
@@ -304,6 +308,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202207310751052_InitialCreate.resx">
       <DependentUpon>202207310751052_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208110722204_HotelUpdate.resx">
+      <DependentUpon>202208110722204_HotelUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

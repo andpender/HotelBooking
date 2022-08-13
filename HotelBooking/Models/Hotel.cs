@@ -28,7 +28,13 @@ namespace HotelBooking.Models
         [Display(Name = "Created Date")]
         public DateTime CreatedDate { get; set; }
 
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
         public virtual ICollection<Room> Rooms { get; set; }
+
+        public virtual ICollection<Rating> Ratings { get; set; }
 
         public Hotel()
         {

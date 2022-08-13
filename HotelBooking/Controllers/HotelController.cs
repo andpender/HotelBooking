@@ -57,7 +57,13 @@ namespace HotelBooking.Controllers
         {
             if (ModelState.IsValid)
             {
-                var test = GeocodingAsync(hotel.Address);
+                var addressGeocodingResponse = GeocodingAsync(hotel.Address).Result;
+                if (addressGeocodingResponse != null)
+                {
+                    var coordinates = addressGeocodingResponse.features.FirstOrDefault().geometry.coordinates;
+                    hotel.Longitude = coordinates[0];
+                    hotel.Latitude = coordinates[1];
+                }
                 db.Hotels.Add(hotel);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
