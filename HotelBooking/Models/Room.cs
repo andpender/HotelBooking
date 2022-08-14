@@ -11,10 +11,7 @@ namespace HotelBooking.Models
         public int Id { get; set; }
 
         [Required]
-        public string NumBeds { get; set; }
-
-        [Required]
-        public string Address { get; set; }
+        public int NumBeds { get; set; }
 
         public Availability Availability { get; set; }
 

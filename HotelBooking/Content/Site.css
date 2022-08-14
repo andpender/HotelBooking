@@ -22,3 +22,10 @@ select,
 textarea {
     max-width: 280px;
 }
+
+#bannerimage {
+    width: 100%;
+    background-image: url('beach_banner.jpg');
+    height: 405px;
+    background-position: center;
+}
