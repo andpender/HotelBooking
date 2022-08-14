@@ -15,10 +15,14 @@
 
         protected override void Seed(HotelBooking.DAL.HotelBookingContext context)
         {
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method
-            //  to avoid creating duplicate seed data.
+            context.Ratings.AddOrUpdate(x => x.Id,
+                new Models.Rating() { Id = 1, Score = 1, UserId = "a", Content = "This was great", Hotel = context.Hotels.Single(h => h.Id == 13) },
+                new Models.Rating() { Id = 2, Score = 1, UserId = "a", Content = "This was great", Hotel = context.Hotels.Single(h => h.Id == 13) },
+                new Models.Rating() { Id = 3, Score = 3, UserId = "a", Content = "This was great", Hotel = context.Hotels.Single(h => h.Id == 13) },
+                new Models.Rating() { Id = 4, Score = 3, UserId = "a", Content = "This was great", Hotel = context.Hotels.Single(h => h.Id == 13) },
+                new Models.Rating() { Id = 5, Score = 4, UserId = "a", Content = "This was great", Hotel = context.Hotels.Single(h => h.Id == 13) },
+                new Models.Rating() { Id = 6, Score = 5, UserId = "a", Content = "This was great", Hotel = context.Hotels.Single(h => h.Id == 13) }
+                );
         }
     }
 }

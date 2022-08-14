@@ -225,6 +225,10 @@
     <Compile Include="Migrations\202208110722204_HotelUpdate.designer.cs">
       <DependentUpon>202208110722204_HotelUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208130708327_Rating.cs" />
+    <Compile Include="Migrations\202208130708327_Rating.designer.cs">
+      <DependentUpon>202208130708327_Rating.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Availability.cs" />
@@ -233,6 +237,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Rating.cs" />
+    <Compile Include="Models\RatingViewModel.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\WriteEmailViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -311,6 +316,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208110722204_HotelUpdate.resx">
       <DependentUpon>202208110722204_HotelUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208130708327_Rating.resx">
+      <DependentUpon>202208130708327_Rating.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

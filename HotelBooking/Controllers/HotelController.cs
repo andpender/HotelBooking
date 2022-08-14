@@ -12,6 +12,7 @@ using HotelBooking.Models;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using Microsoft.AspNet.Identity;
 
 namespace HotelBooking.Controllers
 {
@@ -131,6 +132,29 @@ namespace HotelBooking.Controllers
             db.Hotels.Remove(hotel);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        // POST: Hotel/AddRating
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddRating([Bind(Include = "Score,Content,HotelId")] RatingViewModel ratingViewModel)
+        {
+            var userId = User.Identity.GetUserId();
+            if (ModelState.IsValid && userId != null)
+            {
+                var rating = new Rating();
+                rating.UserId = userId;
+                rating.Hotel = db.Hotels.Find(ratingViewModel.HotelId);
+                rating.Score = ratingViewModel.Score;
+                rating.Content = ratingViewModel.Content;
+
+                db.Ratings.Add(rating);
+                await db.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Details", new { id = ratingViewModel.HotelId });
         }
 
         protected override void Dispose(bool disposing)

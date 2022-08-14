@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -11,9 +12,11 @@ namespace HotelBooking.Models
         public int Id { get; set; }
 
         [Required]
+        [Range(1, 5)]
         public int Score { get; set; }
 
         [Required]
+        [Display(Name = "Created Date")]
         public DateTime CreatedDate { get; set; }
 
         [Required]
@@ -23,5 +26,10 @@ namespace HotelBooking.Models
         public string Content { get; set; }
 
         public virtual Hotel Hotel { get; set; }
+
+        public Rating()
+        {
+            CreatedDate = DateTime.Now.ToUniversalTime();
+        }
     }
 }

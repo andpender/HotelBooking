@@ -9,6 +9,7 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
 <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css" type="text/css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <style>
     #map-container {
         height: 100%;
@@ -52,23 +53,14 @@
         <dd>
             @Html.DisplayFor(model => model.Address)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-
     </dl>
+    <span class="fa fa-star star-rating"></span>
+    <span class="fa fa-star star-rating"></span>
+    <span class="fa fa-star star-rating"></span>
+    <span class="fa fa-star star-rating"></span>
+    <span class="fa fa-star star-rating"></span>
+    <hr />
 </div>
-
-<span class="fa fa-star star-rating"></span>
-<span class="fa fa-star star-rating"></span>
-<span class="fa fa-star star-rating"></span>
-<span class="fa fa-star star-rating"></span>
-<span class="fa fa-star star-rating"></span>
 
 <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#home">Info</a></li>
@@ -89,8 +81,77 @@
         <p>Some content in menu 1.</p>
     </div>
     <div id="reviews" class="tab-pane fade">
-        <h3>Menu 2</h3>
-        <p>Some content in menu 2.</p>
+
+        @if (Model.Ratings.Any())
+        {
+            <h3>Reviews</h3>
+            <table id="review-table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Ratings.First().Score)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Ratings.First().Content)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Ratings.First().CreatedDate)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Ratings.ToList())
+                    {
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Score)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Content)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        }
+
+        @using (Html.BeginForm("AddRating", "Hotel", FormMethod.Post, null))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                <h3>Leave a Review</h3>
+                <div class="form-group">
+                    <label class="control-label col-md-2">Score</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" data-val="true" data-val-number="The field Score must be a number." data-val-range="The field Score must be between 1 and 5." data-val-range-max="5" data-val-range-min="1" data-val-required="The Score field is required." id="Score" name="Score" type="number" value="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Content</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" data-val="true" data-val-required="The Content field is required." id="Content" name="Content" type="text" value="This was great">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <input type="hidden" name="HotelId" value="@(Model.Id)" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
 
@@ -104,6 +165,10 @@
 </p>
 
 <script>
+    $(document).ready(function () {
+        $('#review-table').DataTable();
+    });
+
     mapboxgl.accessToken = 'pk.eyJ1IjoiYXBlbjAwMTQiLCJhIjoiY2w2ajF6Y2d4MHRoYTNjcWdzenFieG8wdSJ9.KLV3yGuhiwx1TT8SHsCPVw';
     const map = new mapboxgl.Map({
         container: 'map', // container ID
@@ -132,7 +197,7 @@
         directions.setDestination([@Model.Longitude, @Model.Latitude]);
     });
 
-    const rating = 3;
+    const rating = @(Model.Ratings.Any() ? Model.Ratings.Average(x => x.Score) : 0)
 
     $(".star-rating").filter(function (index) {
         return index < rating;
